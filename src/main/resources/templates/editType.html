@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1/js/bootstrap.js"></script>
+    <title>Types</title>
+</head>
+<body>
+
+<div class="container">
+    <div id="navbar-common"></div>
+</div>
+<script>
+    $("#navbar-common").load("/common/Navbar.html");
+</script>
+
+<div class="container">
+    <form method="post" class="form-blog">
+        <input type="hidden" id="types" th:value="${Types}"/>
+        <br><br>
+
+        <label style="font-size: x-large">文章类型</label>
+        <div class="col-md-12 type-main" id="listMain"></div>
+
+        <div class="form-group">
+            <input type="text" id="newType" class="form-control" placeholder="Type" required autofocus>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitNewType()">Add New Type</button>
+    </form>
+</div>
+
+<script>
+    var types=$.parseJSON(document.getElementById("types").value);
+    console.log(types);
+    var j = 0;
+    var sum = "";
+    sum+="<div class=\"row\">";
+    for(var i=0;i<types.length;i++)
+    {
+        j++;
+        var single="<div class=\"card col-md-3 shadow-sm\">\n" +
+            "            <div class=\"card-body\">\n" +
+            "             <a class='stretched-link' href='/article/blogList/" + types[i].id + "'>"+types[i].name+"</a>\n" +
+            "            </div>\n" +
+            "          </div>";
+        sum+=single;
+        if(j==4)
+        {
+            sum+="</div><div class='row'>";
+            j-=4;
+        }
+    }
+    sum+="</div><br><br>";
+    $("#listMain").append(sum);
+
+    function submitNewType() {
+        var type = document.getElementById("newType").value;
+        var json = JSON.stringify({
+            "name":type,
+        });
+        console.log(json);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '/type/addType',
+            contentType: "application/json",
+            data: json,
+            success:function (data) {
+                if(data.success)
+                {
+                    alert(data.message);
+                    window.location.reload();
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+</script>
+
+
+<div class="container">
+    <div id="Footer-common"></div>
+</div>
+<script>
+    $("#Footer-common").load("/common/Footer.html");
+</script>
+
+
+</body>
+</html>

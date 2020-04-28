@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1/js/bootstrap.js"></script>
+    <script src="/webjars/tinymce/5.1.6/tinymce.js"></script>
+    <title>Post New Blog</title>
+</head>
+<body>
+
+<input type="hidden" id="screenName" th:value="${ScreenName}"/>
+<script>
+    if(document.getElementById("screenName").value=="")
+    {
+        alert("You must login first!");
+        window.location.href='/signIn';
+    }
+    var screenName=$.parseJSON(document.getElementById("screenName") .value);
+    console.log(screenName);
+</script>
+
+<div class="container">
+    <div id="navbar-common"></div>
+</div>
+<script>
+    $("#navbar-common").load("/common/Navbar.html");
+</script>
+
+<div class="container">
+    <form method="post" class="form-blog">
+        <input type="hidden" id="types" th:value="${Types}"/>
+        <br><br>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="title">文章标题</label>
+                    <input type="text" id="title" class="form-control" placeholder="Title" required autofocus>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="typeSelect">文章类型</label>
+                    <select class="form-control" id="typeSelect"></select>
+                </div>
+            </div>
+        </div>
+
+        <textarea id="blogContent">Hello, World!</textarea>
+
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitArticle()">Submit Article</button>
+    </form>
+</div>
+
+<script>
+    var type=$.parseJSON(document.getElementById("types").value);
+    console.log(type);
+    for(var i=0;i<type.length;i++)
+    {
+        $("#typeSelect").append("<option>"+type[i].name+"</option>");
+    }
+
+    tinymce.init({
+        selector: '#blogContent',
+        height:500,
+        branding: false,
+    });
+</script>
+
+<script>
+    function submitArticle() {
+        var title = document.getElementById("title").value;
+        var content = tinyMCE.activeEditor.getContent();
+        var time = new Date().getTime().toString();
+        var typeId;
+        var typeName;
+        for(var i=0;i<type.length;i++)
+        {
+            if(type[i].name==document.getElementById("typeSelect").value)
+            {
+                typeId=type[i].id;
+                typeName=type[i].name;
+            }
+        }
+        var json = JSON.stringify({
+            "title": title,
+            "content": content,
+            "createDate":time,
+            "lastEditDate": time,
+            "typeId":typeId,
+            "type":typeName,
+        });
+        console.log(json);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '/article/create',
+            contentType: "application/json",
+            data: json,
+            success:function (data) {
+                if(data.success)
+                {
+                    alert(data.message);
+                    window.location.href='/article/blogList';
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+</script>
+
+
+<div class="container">
+    <div id="Footer-common"></div>
+</div>
+<script>
+    $("#Footer-common").load("/common/Footer.html");
+</script>
+
+
+</body>
+</html>

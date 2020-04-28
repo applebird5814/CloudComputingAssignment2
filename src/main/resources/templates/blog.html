@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1/js/bootstrap.js"></script>
+    <script src="/webjars/tinymce/5.1.6/tinymce.js"></script>
+    <title>Blog</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div id="navbar-common"></div>
+</div>
+<script>
+    $("#navbar-common").load("/common/Navbar.html");
+</script>
+
+<div class="container">
+    <div class="row">
+
+        <input type="hidden" id="article" th:value="${Article}"/>
+        <input type="hidden" id="comments" th:value="${Comments}"/>
+        <div class="col-md-8 article-main">
+            <label style="font-size: 32px" id="articleTitle">123</label>
+            <article id="articleContent">123</article>
+            <div class="comment-main">
+                <br><br>
+                <label>评论区</label><br>
+                <article id="viewComments"></article>
+            </div>
+            <textarea id="comment">Add your comment</textarea>
+            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitComment()">Submit Comment</button>
+        </div>
+
+        <script>
+            var article=$.parseJSON(document.getElementById("article").value);
+            document.getElementById("articleTitle").innerHTML=article.title;
+            document.getElementById("articleContent").innerHTML=article.content;
+
+            var comments=$.parseJSON(document.getElementById("comments").value);
+            if(comments.length==0)
+            {
+                document.getElementById("viewComments").innerHTML=("<p>好可怜，这篇文章还没有评论呢~<\p>");
+            }
+            else
+            {
+                var sum = "";
+                for(var i=0;i<comments.length;i++)
+                {
+                    var single= "<div class='row justify-content-between'><div>作者:</div>"+
+                        "<div>发布于："+comments[i].createDate+"</div></div>" +
+                        "<div>"+comments[i].content+"</div><br>";
+                    var sum = sum + single;
+                    console.log(single);
+                }
+                document.getElementById("viewComments").innerHTML=sum;
+            }
+            tinymce.init({
+                selector: '#comment',
+                height:300,
+                branding: false,
+            });
+        </script>
+
+        <aside class="col-md-4 blog-sidebar">
+            <div id="sidebar-common"></div>
+        </aside>
+        <script>
+            $("#sidebar-common").load("/common/Sidebar.html");
+        </script>
+
+    </div>
+</div>
+
+<script>
+    function submitComment() {
+        var content = tinyMCE.activeEditor.getContent();
+        var time = new Date().getTime().toString();
+        var json = JSON.stringify({
+            "content": content,
+            "createDate":time,
+            "articleId":article.id,
+        });
+        console.log(json);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '/comment/addComment',
+            contentType: "application/json",
+            data: json,
+        });
+    }
+</script>
+
+<div class="container">
+    <div id="Footer-common"></div>
+</div>
+<script>
+    $("#Footer-common").load("/common/Footer.html");
+</script>
+
+<script>
+
+
+</script>
+
+
+</body>
+</html>
