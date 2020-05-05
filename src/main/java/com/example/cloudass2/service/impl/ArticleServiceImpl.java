@@ -46,12 +46,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> findAll() {
-        return articleDao.findAll();
+        return articleDao.findAllByOrderByLastEditDateDesc();
     }
 
     @Override
     public List<Article> findByType(String typeId) {
-        return articleDao.findByTypeId(typeId);
+        return articleDao.findByTypeIdOrderByLastEditDateDesc(typeId);
     }
 
     @Override

@@ -15,7 +15,7 @@
 <script>
     if(document.getElementById("screenName").value=="")
     {
-        alert("You must login first!");
+        alert("You must login first or you are not login as the author!");
         window.location.href='/signIn';
     }
     var screenName=$.parseJSON(document.getElementById("screenName") .value);

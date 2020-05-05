@@ -14,7 +14,9 @@ public interface ArticleDao extends JpaRepository<Article, Integer> {
 
     Optional<Article> findById(int id);
 
-    List<Article> findByTypeId(String typeId);
+    List<Article> findByTypeIdOrderByLastEditDateDesc(String typeId);
+
+    List<Article> findAllByOrderByLastEditDateDesc();
 
     @Transactional
     @Modifying(clearAutomatically = true)

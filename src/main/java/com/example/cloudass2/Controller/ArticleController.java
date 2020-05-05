@@ -81,8 +81,11 @@ public class ArticleController {
         if(httpSession!=null)
         {
             User user =(User) httpSession.getAttribute("user");
-            model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
             Article article = articleService.findArticleById(id);
+            if(user.getId().equals(article.getAuthorId()))
+            {
+                model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
+            }
             model.addAttribute("Type",new Gson().toJson(typeService.getById(article.getTypeId())));
             model.addAttribute("Article",new Gson().toJson(article));
         }

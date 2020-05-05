@@ -6,26 +6,83 @@
     <link rel="stylesheet" href="webjars/bootstrap/4.4.1/css/bootstrap.min.css" />
     <script src="webjars/jquery/3.4.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/4.4.1/js/bootstrap.js"></script>
-    <title>首页</title>
+    <title>Index</title>
 </head>
 <body>
 
+    <input type="hidden" id="address" th:value="${Address}"/>
+    <script>
+        // get the address from google
+        if(document.getElementById("address").value=="")
+        {
+            // here if leave empty, it will chose my wifi point
+            var mywifi = JSON.stringify({"wifiAccessPoints":[]});
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAITpqFq9cTFRE7ayYVNRWqs0CHCK1o5D8',
+                contentType: "application/json",
+                data: mywifi,
+                success:function (latlng) {
+                    var data = latlng;
+                    var location = data.location;
+                    var lat =location.lat;
+                    var lng = location.lng;
+                    var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lng+"&language=en-AU&key=AIzaSyAITpqFq9cTFRE7ayYVNRWqs0CHCK1o5D8";
+                    console.log(url);
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: url,
+                        data: "",
+                        success:function (address){
+                            console.log(address)
+                            var pc = address.plus_code;
+                            var cc = pc.compound_code;
+                            $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                url: "/addAddress?address="+cc,
+                                data: "",
+                            });
+                        }});
+                }
+            });
+        }
+    </script>
     <div class="container">
         <div id="navbar-common"></div>
+        <div id="userInfo"></div>
     </div>
     <script>
         $("#navbar-common").load("common/Navbar.html");
     </script>
+    <input type="hidden" id="screenName" th:value="${ScreenName}"/>
+    <script>
+        var address = document.getElementById("address").value;
+        console.log(address);
+        if(document.getElementById("screenName").value=="")
+        {
+            var ele = "Hello tourist from "+address+" , Click here to "+"<a href=\"/signIn\">Sign In</a>"+
+                " or "+"<a href=\"/signUp\">Sign Up</a>";
+            document.getElementById("userInfo").innerHTML=ele;
+        }
+        else {
+            var screenName=$.parseJSON(document.getElementById("screenName") .value);
+            console.log(screenName);
+            var ele = "Hello, " + screenName +" your current login address is "+address;
+            document.getElementById("userInfo").innerHTML=ele;
+        }
+
+    </script>
 
     <div class="container">
         <input type="hidden" id="types" th:value="${Types}"/>
-        <input type="hidden" id="screenName" th:value="${ScreenName}"/>
+
         <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between" id="typeNavList"></nav>
         </div>
         <script>
-            var screenName=$.parseJSON(document.getElementById("screenName") .value);
-            console.log(screenName);
             var types=$.parseJSON(document.getElementById("types") .value);
             console.log(types);
             for(var i=0;i<types.length;i++)
@@ -106,6 +163,25 @@
     </div>
     <script>
         $("#Footer-common").load("common/Footer.html");
+    </script>
+
+    <script>
+        /*
+        */
+        /*
+        Object
+        plus_code: {compound_code: "5WMR+5Q 澳大利亚維多利亞省墨尔本滨海港区", global_code: "4RJ65WMR+5Q"}
+        results: Array(11)
+        0:
+        access_points: []
+        address_components: Array(5)
+        0: {long_name: "Victoria", short_name: "VIC", types: Array(2)}
+        1: {long_name: "Docklands", short_name: "Docklands", types: Array(2)}
+        2: {long_name: "Melbourne City", short_name: "Melbourne", types: Array(2)}
+        3: {long_name: "澳大利亚", short_name: "AU", types: Array(2)}
+        4: {long_name: "3008", short_name: "3008", types: Array(1)}
+        length: 5
+         */
     </script>
 
 </body>

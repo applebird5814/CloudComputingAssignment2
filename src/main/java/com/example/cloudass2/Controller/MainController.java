@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -46,12 +47,42 @@ public class MainController {
         HttpSession httpSession = httpServletRequest.getSession(false);
         if(httpSession!=null)
         {
-            User user =(User) httpSession.getAttribute("user");
-            System.out.println(user.getScreenName());
-            model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
+            try {
+                User user = (User) httpSession.getAttribute("user");
+                model.addAttribute("ScreenName", new Gson().toJson(user.getScreenName()));
+            }catch (Exception e)
+            {
+
+            }
+            try{
+                String address = (String) httpSession.getAttribute("address");
+                System.out.println(address);
+                model.addAttribute("Address",new Gson().toJson(address));
+            }catch (Exception e)
+            {
+
+            }
         }
         return "index";
     }
+
+    @ResponseBody
+    @RequestMapping("/addAddress")
+    public String address(@RequestParam("address") String address,HttpServletRequest httpServletRequest){
+        System.out.println(address);
+        String a[]=address.split(" ");
+        HttpSession httpSession =httpServletRequest.getSession();
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=2;i<a.length;i++)
+        {
+            stringBuilder.append(a[i]+" ");
+        }
+        httpSession.setAttribute("address",stringBuilder.toString());
+        // 30 minutes * 60 seconds
+        httpSession.setMaxInactiveInterval(30*60);
+        return "success";
+    }
+
 
     @RequestMapping("/signIn")
     public String signIn(){
