@@ -11,6 +11,7 @@
 </head>
 
 <body>
+<input type="hidden" id="screenName" th:value="${ScreenName}"/>
 
 <div class="container">
     <div id="navbar-common"></div>
@@ -26,39 +27,58 @@
         <input type="hidden" id="comments" th:value="${Comments}"/>
         <div class="col-md-8 article-main">
             <label style="font-size: 32px" id="articleTitle">123</label>
+            <label style="font-size: 16px" id="articleAuthor">123</label>
+            <br><br>
             <article id="articleContent">123</article>
             <div class="comment-main">
                 <br><br>
                 <label>评论区</label><br>
                 <article id="viewComments"></article>
             </div>
-            <textarea id="comment">Add your comment</textarea>
-            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitComment()">Submit Comment</button>
+            <div class="comment-add" id="commentAdd"></div>
+
         </div>
 
         <script>
             var article=$.parseJSON(document.getElementById("article").value);
             document.getElementById("articleTitle").innerHTML=article.title;
+            //可能要做成点击Author跳转到UserDetail页面
+            document.getElementById("articleAuthor").innerHTML="Author: "+article.author;
             document.getElementById("articleContent").innerHTML=article.content;
 
             var comments=$.parseJSON(document.getElementById("comments").value);
             if(comments.length==0)
             {
-                document.getElementById("viewComments").innerHTML=("<p>好可怜，这篇文章还没有评论呢~<\p>");
+                document.getElementById("viewComments").innerHTML=("<p>It's a pity that this article hasn't commented yet.<\p>");
             }
             else
             {
                 var sum = "";
                 for(var i=0;i<comments.length;i++)
                 {
-                    var single= "<div class='row justify-content-between'><div>作者:</div>"+
-                        "<div>发布于："+comments[i].createDate+"</div></div>" +
-                        "<div>"+comments[i].content+"</div><br>";
+                    var single= "<div class='row justify-content-between'>" +
+                        "<div>Author: "+comments[i].author+"<br>"+
+                        "Post at: "+comments[i].createDate+"<br>"+
+                        comments[i].content+"</div>" +
+                        "</div><br>";
                     var sum = sum + single;
                     console.log(single);
                 }
                 document.getElementById("viewComments").innerHTML=sum;
             }
+            if(document.getElementById("screenName").value=="")
+            {
+                document.getElementById("commentAdd").innerHTML=("<div>Please<a href=\"/signIn\"> sign in</a> " +
+                    "to post your comments</div>")
+            }
+            else
+            {
+                document.getElementById("commentAdd").innerHTML=("<textarea id=\"comment\">Add your comment</textarea>\n" +
+                    "<button class=\"btn btn-lg btn-primary btn-block\" type=\"button\" onclick=\"submitComment()\">Submit Comment</button>");
+            }
+            var screenName=$.parseJSON(document.getElementById("screenName") .value);
+            console.log(screenName);
+
             tinymce.init({
                 selector: '#comment',
                 height:300,
@@ -92,6 +112,17 @@
             url: '/comment/addComment',
             contentType: "application/json",
             data: json,
+            success:function (data) {
+                if(data.success)
+                {
+                    alert(data.message);
+                    window.location.reload();
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            }
         });
     }
 </script>

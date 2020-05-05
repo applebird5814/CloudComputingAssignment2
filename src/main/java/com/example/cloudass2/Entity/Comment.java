@@ -18,6 +18,10 @@ public class Comment {
     @NotNull
     private String articleId;
 
+    private String author;
+
+    private String authorId;
+
     public Comment() {
     }
 
@@ -53,6 +57,22 @@ public class Comment {
         this.articleId = articleId;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
@@ -60,6 +80,8 @@ public class Comment {
                 ", content='" + content + '\'' +
                 ", createDate=" + createDate +
                 ", articleId='" + articleId + '\'' +
+                ", author='" + author + '\'' +
+                ", authorId='" + authorId + '\'' +
                 '}';
     }
 }

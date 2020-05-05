@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Collection;
 
 @Controller
 @RequestMapping("/article")
@@ -42,11 +43,16 @@ public class ArticleController {
     }
 
     @RequestMapping("/blog/{id}")
-    public String blog(@PathVariable(value = "id") String id,Model model){
+    public String blog(@PathVariable(value = "id") String id,Model model,HttpServletRequest httpServletRequest){
         Article article = articleService.findArticleById(id);
         if(article==null)
         {
             return "error/ArticleNotFound";
+        }
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        if(httpSession!=null) {
+            User user = (User) httpSession.getAttribute("user");
+            model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
         }
         model.addAttribute("Article",new Gson().toJson(article));
         model.addAttribute("Comments",new Gson().toJson(commentService.findCommentsByArticleId(id)));
@@ -75,7 +81,6 @@ public class ArticleController {
         if(httpSession!=null)
         {
             User user =(User) httpSession.getAttribute("user");
-            System.out.println(user.getScreenName());
             model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
             Article article = articleService.findArticleById(id);
             model.addAttribute("Type",new Gson().toJson(typeService.getById(article.getTypeId())));
@@ -101,7 +106,7 @@ public class ArticleController {
                 article.setAuthor(user.getScreenName());
                 article.setAuthorId(user.getId());
                 articleService.addArticle(article);
-                return new Gson().toJson(new Response(true,"提交成功"));
+                return new Gson().toJson(new Response(true,"Submit success"));
             } catch (Exception e) {
                 return new Gson().toJson(new Response(false,e.getMessage()));
             }
