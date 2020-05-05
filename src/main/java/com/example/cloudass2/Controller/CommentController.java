@@ -31,9 +31,14 @@ public class CommentController {
     private String addComment(@RequestBody @Valid Comment comment, BindingResult result,HttpServletRequest httpServletRequest){
         HttpSession httpSession = httpServletRequest.getSession(false);
         if(httpSession!=null) {
-            User user = (User) httpSession.getAttribute("user");
-            comment.setAuthorId(user.getId());
-            comment.setAuthor(user.getScreenName());
+            try {
+                User user = (User) httpSession.getAttribute("user");
+                comment.setAuthorId(user.getId());
+                comment.setAuthor(user.getScreenName());
+            }catch (Exception e)
+            {
+
+            }
         }
         System.out.println(comment);
         commentService.addComment(comment);

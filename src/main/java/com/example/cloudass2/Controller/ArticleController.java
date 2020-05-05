@@ -51,8 +51,13 @@ public class ArticleController {
         }
         HttpSession httpSession = httpServletRequest.getSession(false);
         if(httpSession!=null) {
-            User user = (User) httpSession.getAttribute("user");
-            model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
+            try {
+                User user = (User) httpSession.getAttribute("user");
+                model.addAttribute("ScreenName", new Gson().toJson(user.getScreenName()));
+            }catch (Exception e)
+            {
+
+            }
         }
         model.addAttribute("Article",new Gson().toJson(article));
         model.addAttribute("Comments",new Gson().toJson(commentService.findCommentsByArticleId(id)));
@@ -80,14 +85,19 @@ public class ArticleController {
         HttpSession httpSession = httpServletRequest.getSession(false);
         if(httpSession!=null)
         {
-            User user =(User) httpSession.getAttribute("user");
-            Article article = articleService.findArticleById(id);
-            if(user.getId().equals(article.getAuthorId()))
+            try {
+                User user = (User) httpSession.getAttribute("user");
+                Article article = articleService.findArticleById(id);
+                if(user.getId().equals(article.getAuthorId()))
+                {
+                    model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
+                }
+                model.addAttribute("Type",new Gson().toJson(typeService.getById(article.getTypeId())));
+                model.addAttribute("Article",new Gson().toJson(article));
+            }catch (Exception e)
             {
-                model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
+
             }
-            model.addAttribute("Type",new Gson().toJson(typeService.getById(article.getTypeId())));
-            model.addAttribute("Article",new Gson().toJson(article));
         }
         return "editBlog";
     }
@@ -133,9 +143,13 @@ public class ArticleController {
         HttpSession httpSession = httpServletRequest.getSession(false);
         if(httpSession!=null)
         {
-            User user =(User) httpSession.getAttribute("user");
-            System.out.println(user.getScreenName());
-            model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
+            try {
+                User user = (User) httpSession.getAttribute("user");
+                model.addAttribute("ScreenName", new Gson().toJson(user.getScreenName()));
+            }catch (Exception e)
+            {
+
+            }
         }
         return "postNewBlog";
     }
