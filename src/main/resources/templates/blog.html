@@ -27,6 +27,7 @@
         <input type="hidden" id="comments" th:value="${Comments}"/>
         <div class="col-md-8 article-main">
             <label style="font-size: 32px" id="articleTitle">123</label>
+            <br>
             <label style="font-size: 16px" id="articleAuthor">123</label>
             <br><br>
             <article id="articleContent">123</article>
@@ -43,7 +44,7 @@
             var article=$.parseJSON(document.getElementById("article").value);
             document.getElementById("articleTitle").innerHTML=article.title;
             //可能要做成点击Author跳转到UserDetail页面
-            document.getElementById("articleAuthor").innerHTML="Author: "+article.author;
+            document.getElementById("articleAuthor").innerHTML="Published by "+article.author;
             document.getElementById("articleContent").innerHTML=article.content;
 
             var comments=$.parseJSON(document.getElementById("comments").value);
