@@ -31,6 +31,10 @@
             <label style="font-size: 16px" id="articleAuthor">123</label>
             <br><br>
             <article id="articleContent">123</article>
+            <br>
+            <div class="row" id="mp3test">
+                <button class="btn btn-lg btn-primary btn-block" type="button" onclick="toMp3()">Compile MP3</button>
+            </div>
             <div class="comment-main">
                 <br><br>
                 <label>评论区</label><br>
@@ -46,7 +50,6 @@
             //可能要做成点击Author跳转到UserDetail页面
             document.getElementById("articleAuthor").innerHTML="Published by "+article.author;
             document.getElementById("articleContent").innerHTML=article.content;
-
             var comments=$.parseJSON(document.getElementById("comments").value);
             if(comments.length==0)
             {
@@ -125,6 +128,37 @@
                 }
             }
         });
+    }
+
+    var mp3Url;
+
+    function toMp3() {
+        var text = document.getElementById("articleContent").innerText;
+        var json = "";
+        var url = '/vision/textToSpeech?text='+text;
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            contentType: "application/json",
+            data: json,
+            success:function (data) {
+                if(data.success)
+                {
+                    mp3Url=data.message;
+                    document.getElementById("mp3test").innerHTML="<button class=\"btn btn-lg btn-primary btn-block\" type=\"button\" onclick=\"play()\">Play MP3</button>";
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+
+    function play() {
+        var audio= new Audio(mp3Url);
+        audio.play();
     }
 </script>
 

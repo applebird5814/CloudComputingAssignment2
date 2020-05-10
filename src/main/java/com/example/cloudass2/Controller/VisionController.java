@@ -1,11 +1,13 @@
 package com.example.cloudass2.Controller;
 
 
+import com.example.cloudass2.Entity.Response;
 import com.example.cloudass2.Util.TextToSpeech;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.Feature;
 import com.google.cloud.vision.v1.SafeSearchAnnotation;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gcp.storage.GoogleStorageResource;
@@ -44,11 +46,10 @@ public class VisionController {
     private ResourceLoader resourceLoader;
 
     @ResponseBody
-    @RequestMapping("/test")
-    public String voiceTest() throws IOException {
-        TextToSpeech audio = new TextToSpeech();
-        String s = "Hello java spring";
-        byte[] steam = audio.transferTextIntoMp3Steam(s);
+    @RequestMapping("/textToSpeech")
+    public String voiceTest(@RequestParam("text") String text) throws IOException {
+        TextToSpeech textToSpeech = new TextToSpeech();
+        byte[] steam = textToSpeech.transferTextIntoMp3Steam(text);
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         String fileName = uuid+".mp3";
         String uploadUrl = "gs://"+bucketName+"/"+fileName;
@@ -60,7 +61,7 @@ public class VisionController {
 
         }
         String publicAccessUrl = "https://storage.googleapis.com/"+bucketName+"/"+fileName;
-        return "success";
+        return new Gson().toJson(new Response(true,publicAccessUrl));
     }
 
     @RequestMapping("/uploadImage")
