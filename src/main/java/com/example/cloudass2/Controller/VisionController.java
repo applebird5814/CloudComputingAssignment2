@@ -1,6 +1,7 @@
 package com.example.cloudass2.Controller;
 
 
+import com.example.cloudass2.Util.TextToSpeech;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.Feature;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +43,28 @@ public class VisionController {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @ResponseBody
+    @RequestMapping("/test")
+    public String voiceTest() throws IOException {
+        TextToSpeech audio = new TextToSpeech();
+        String s = "Hello java spring";
+        byte[] steam = audio.transferTextIntoMp3Steam(s);
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        String fileName = uuid+".mp3";
+        String uploadUrl = "gs://"+bucketName+"/"+fileName;
+        Resource resource = new GoogleStorageResource(storage,uploadUrl);
+        try (OutputStream os = ((WritableResource) resource).getOutputStream()) {
+            os.write(steam);
+        }catch (Exception e)
+        {
+
+        }
+        String publicAccessUrl = "https://storage.googleapis.com/"+bucketName+"/"+fileName;
+        return "success";
+    }
+
     @RequestMapping("/uploadImage")
-    public @ResponseBody Map<String,Object> uploadImage(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public @ResponseBody Map<String,Object> uploadImage(@RequestParam("file") MultipartFile file){
         Map<String,Object> response = new HashMap<>();
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
@@ -83,13 +105,13 @@ public class VisionController {
         return response;
     }
 
-    public boolean censor( String imageUrl)
+    public boolean censor(String imageUrl)
     {
         AnnotateImageResponse response = this.cloudVisionTemplate.analyzeImage(
                 this.resourceLoader.getResource(imageUrl), Feature.Type.SAFE_SEARCH_DETECTION);
         SafeSearchAnnotation safeSearchAnnotation =response.getSafeSearchAnnotation();
-        String s = "Adult"+safeSearchAnnotation.getAdult().toString()+
-                "\nspoof"+safeSearchAnnotation.getSpoof().toString()
+        String s = "Adult"+safeSearchAnnotation.getAdult().toString()
+                +"\nspoof"+safeSearchAnnotation.getSpoof().toString()
                 +"\nmedical"+safeSearchAnnotation.getMedical().toString()
                 +"\nviolence"+safeSearchAnnotation.getViolence().toString()
                 +"\nracy"+safeSearchAnnotation.getRacy().toString()
