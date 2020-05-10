@@ -64,8 +64,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-storage</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gcp-storage</artifactId>
         </dependency>
 
         <dependency>
