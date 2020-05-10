@@ -19,61 +19,15 @@
     $("#navbar-common").load("/common/Navbar.html");
 </script>
 
-<div class="box-footer no-border">
-    <el-pagination
-            background
-            @size-change="sizeChange"
-            @current-change="pageChange"
-            :current-page="queryForm.page"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="queryForm.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-    </el-pagination>
-</div>
-
-<div class="container">
-    <div class="row">
-
-        <input type="hidden" id="articles" th:value="${Articles}"/>
-
-        <br><br>
-        <div class="col-md-8 article-main" id="listMain"><br><br></div>
-
-        <script>
-            var articles=$.parseJSON(document.getElementById("articles").value);
-            console.log(articles);
-            if(articles.length==0)
-            {
-                $("#listMain").append("<p>该分类下暂时没有文章哦~</p>");
-            }
-            else {
-                for (var i = 0; i < articles.length; i++) {
-                    var single = "<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">\n" +
-                        "        <div class=\"col p-4 d-flex flex-column position-static\">\n" +
-                        "          <strong class=\"d-inline-block mb-2 text-primary\">" + articles[i].type + "</strong>\n" +
-                        "          <h3 class=\"mb-0\">" + articles[i].title + "</h3>\n" +
-                        "          <div class=\"mb-1 text-muted\">" + articles[i].createDate + "</div>\n" +
-                        "          <a class='stretched-link' href='/article/blog/" + articles[i].id + "'>Read Detail</a>\n" +
-                        "        </div>\n" +
-                        "        <div class=\"col-auto d-none d-lg-block\">\n" +
-                        "          <svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"xMidYMid slice\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\"><title>Placeholder</title><rect width=\"100%\" height=\"100%\" fill=\"#55595c\"/><text x=\"50%\" y=\"50%\" fill=\"#eceeef\" dy=\".3em\">Thumbnail</text></svg>\n" +
-                        "        </div>\n" +
-                        "      </div>\n";
-                    $("#listMain").append(single);
-                }
-            }
-        </script>
-
-        <aside class="col-md-4 blog-sidebar">
-            <div id="sidebar-common"></div>
-        </aside>
-        <script>
-            $("#sidebar-common").load("/common/Sidebar.html");
-        </script>
+<form method="post" class="form-horizontal" action="addImage" enctype="multipart/form-data">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">图片</label>
+        <div class="col-sm-10">
+            <input type="file" class="form-control" name="file">
+        </div>
     </div>
-</div>
-
+    <button type="submit">Submit</button>
+</form>
 
 <div class="container">
     <div id="Footer-common"></div>
