@@ -75,7 +75,6 @@
             xhr = new XMLHttpRequest();
             xhr.withCredentials = false;
             xhr.open('POST', '/ai/uploadImage');
-
             xhr.onload = function() {
                 var json;
                 if (xhr.status != 200) {

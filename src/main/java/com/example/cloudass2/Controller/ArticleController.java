@@ -90,7 +90,7 @@ public class ArticleController {
                 Article article = articleService.findArticleById(id);
                 if(user.getId().equals(article.getAuthorId()))
                 {
-                    model.addAttribute("ScreenName",new Gson().toJson(user.getScreenName()));
+                    model.addAttribute("AuthorValidation",new Gson().toJson(user.getScreenName()));
                 }
                 model.addAttribute("Type",new Gson().toJson(typeService.getById(article.getTypeId())));
                 model.addAttribute("Article",new Gson().toJson(article));

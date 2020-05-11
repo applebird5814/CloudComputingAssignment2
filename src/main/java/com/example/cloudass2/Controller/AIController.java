@@ -20,8 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -46,22 +44,12 @@ public class AIController {
     @Autowired
     private ResourceLoader resourceLoader;
 
-    @ResponseBody
-    @RequestMapping("/test")
-    private String test(@RequestParam("text")String text) {
-        System.out.println(text);
-        try {
-            return new Gson().toJson(new Response(true,"译文"+text));
-        }catch (Exception e)
-        {
-            return new Gson().toJson(new Response(false,e.getMessage()));
-        }
-    }
 
     @ResponseBody
     @RequestMapping("/translation")
-    private String translation(@RequestParam("text")String text) {
-        CloudTranslation cloudTranslation = new CloudTranslation();
+    private String translation(@RequestParam("text")String text,@RequestParam("language")String language) {
+        System.out.println(language);
+        CloudTranslation cloudTranslation = new CloudTranslation(language);
         try {
             return new Gson().toJson(new Response(true,cloudTranslation.translation(text)));
         }catch (Exception e)

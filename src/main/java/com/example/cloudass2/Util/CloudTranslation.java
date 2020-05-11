@@ -17,6 +17,11 @@ public class CloudTranslation {
         this.targetLanguage = "zh";
     }
 
+    public CloudTranslation(String targetLanguage) {
+        this.projectId = "sunny-mender-270008";
+        this.targetLanguage = targetLanguage;
+    }
+
     public String translation(String text) throws IOException {
         return translateText(projectId,targetLanguage,text);
     }

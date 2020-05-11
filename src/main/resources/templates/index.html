@@ -24,6 +24,7 @@
                 contentType: "application/json",
                 data: mywifi,
                 success:function (latlng) {
+                    console.log(latlng);
                     var data = latlng;
                     var location = data.location;
                     var lat =location.lat;

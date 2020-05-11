@@ -26,11 +26,14 @@
     <div class="row">
         <div class="col-md-8">
             <div class="row">
-                <div class="col-md-12 article-title" id="article-title">
+                <div class="col-md-9 article-title" id="article-title">
                     <label style="font-size: 32px" id="articleTitle">123</label>
                     <br>
                     <label style="font-size: 16px" id="articleAuthor">123</label>
                     <br>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-lg btn-primary btn-block" type="button" onclick=editBlog()>Edit</button>
                 </div>
             </div>
             <div class="row">
@@ -45,11 +48,23 @@
                         <button class="btn btn-lg btn-primary btn-block" type="button" onclick="toMp3()">Compile MP3</button>
                     </div>
                     <div class="row" id="translationTest">
-                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="translation()">Translation</button>
+                        <div class="col-md-8">
+                            <select class="custom-select" id="language-type">
+                                <option>zh</option>
+                                <option>en</option>
+                                <option>fr</option>
+                                <option>de</option>
+                                <option>ja</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="col-md-4">
+                            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="translation()">Translation</button>
+                        </div>
                     </div>
                     <div class="comment-main">
                         <br><br>
-                        <label>评论区</label><br>
+                        <label>Comment Area</label><br>
                         <article id="viewComments"></article>
                     </div>
                     <div class="comment-add" id="commentAdd"></div>
@@ -110,6 +125,11 @@
 </script>
 
 <script>
+    function editBlog() {
+        var url = "/article/editBlog/"+article.id;
+        window.location.href=url;
+    }
+
     function submitComment() {
         var content = tinyMCE.activeEditor.getContent();
         var time = new Date().getTime().toString();
@@ -171,10 +191,13 @@
     }
 
     function translation() {
-        document.getElementById("article-main").className="col-md-4 article-main";
-        document.getElementById("translation").className="col-md-4 translation";
+        document.getElementById("article-main").className="col-md-6 article-main";
+        document.getElementById("translation").className="col-md-6 translation";
+        document.getElementById("translation").innerText="Processing, please be patient......";
+        var language = document.getElementById("language-type").value;
+        console.log(language)
         var text = document.getElementById("articleContent").innerText;
-        var url = '/ai/translation?text='+text;
+        var url = '/ai/translation?text='+text+"&language="+language;
         var json="";
         $.ajax({
             type: "POST",
