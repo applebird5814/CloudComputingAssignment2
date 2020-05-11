@@ -23,7 +23,6 @@ public class CloudTranslation {
 
     /*
     public static void translateText() throws IOException {
-        // TODO(developer): Replace these variables before running the sample.
         String projectId = "YOUR-PROJECT-ID";
         // Supported Languages: https://cloud.google.com/translate/docs/languages
         String targetLanguage = "your-target-language";
