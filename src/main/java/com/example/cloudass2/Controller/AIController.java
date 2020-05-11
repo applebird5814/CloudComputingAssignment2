@@ -2,6 +2,7 @@ package com.example.cloudass2.Controller;
 
 
 import com.example.cloudass2.Entity.Response;
+import com.example.cloudass2.Util.CloudTranslation;
 import com.example.cloudass2.Util.TextToSpeech;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
@@ -27,9 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@RequestMapping("vision")
+@RequestMapping("/ai")
 @Controller
-public class VisionController {
+public class AIController {
     @Autowired
     private CloudVisionTemplate cloudVisionTemplate;
 
@@ -44,6 +45,24 @@ public class VisionController {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @ResponseBody
+    @RequestMapping("/test")
+    private String translation() {
+        String s= "It could take on several different forms:\n" +
+                "– In some cases, it is actually a large white board or a complete wall of a\n" +
+                "room that is used to track progress.\n" +
+                "– It could also be in electronic form by using one of a number of different agile\n" +
+                "project management tools so that a much broader audience can view the\n" +
+                "information online";
+        CloudTranslation cloudTranslation = new CloudTranslation();
+        try {
+            return cloudTranslation.translation(s);
+        }catch (Exception e)
+        {
+            return e.getMessage();
+        }
+    }
 
     @ResponseBody
     @RequestMapping("/textToSpeech")

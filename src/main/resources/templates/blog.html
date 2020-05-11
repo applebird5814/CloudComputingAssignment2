@@ -130,12 +130,12 @@
         });
     }
 
-    var mp3Url;
 
+    var mp3Url;
     function toMp3() {
         var text = document.getElementById("articleContent").innerText;
         var json = "";
-        var url = '/vision/textToSpeech?text='+text;
+        var url = '/ai/textToSpeech?text='+text;
         $.ajax({
             type: "POST",
             dataType: "json",
