@@ -24,40 +24,44 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 article-title" id="article-title">
-            <label style="font-size: 32px" id="articleTitle">123</label>
-            <br>
-            <label style="font-size: 16px" id="articleAuthor">123</label>
-            <br>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12 article-title" id="article-title">
+                    <label style="font-size: 32px" id="articleTitle">123</label>
+                    <br>
+                    <label style="font-size: 16px" id="articleAuthor">123</label>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 article-main" id="article-main">
+                    <article id="articleContent">123</article>
+                </div>
+                <div class="translation" id="translation"></div>
+            </div>
+            <div class="=row">
+                <div class="col-md-12 comment-main">
+                    <div class="row" id="mp3test">
+                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="toMp3()">Compile MP3</button>
+                    </div>
+                    <div class="row" id="translationTest">
+                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="translation()">Translation</button>
+                    </div>
+                    <div class="comment-main">
+                        <br><br>
+                        <label>评论区</label><br>
+                        <article id="viewComments"></article>
+                    </div>
+                    <div class="comment-add" id="commentAdd"></div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 article-main" id="article-main">
-            <article id="articleContent">123</article>
-        </div>
-        <div class="translation" id="translation"></div>
         <aside class="col-md-4 blog-sidebar">
             <div id="sidebar-common"></div>
         </aside>
         <script>
             $("#sidebar-common").load("/common/Sidebar.html");
         </script>
-    </div>
-    <div class="=row">
-        <div class="col-md-8 comment-main">
-            <div class="row" id="mp3test">
-                <button class="btn btn-lg btn-primary btn-block" type="button" onclick="toMp3()">Compile MP3</button>
-            </div>
-            <div class="row" id="translationTest">
-                <button class="btn btn-lg btn-primary btn-block" type="button" onclick="translation()">Translation</button>
-            </div>
-            <div class="comment-main">
-                <br><br>
-                <label>评论区</label><br>
-                <article id="viewComments"></article>
-            </div>
-            <div class="comment-add" id="commentAdd"></div>
-        </div>
     </div>
 </div>
 
