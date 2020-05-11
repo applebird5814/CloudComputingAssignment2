@@ -48,19 +48,25 @@ public class AIController {
 
     @ResponseBody
     @RequestMapping("/test")
-    private String translation() {
-        String s= "It could take on several different forms:\n" +
-                "– In some cases, it is actually a large white board or a complete wall of a\n" +
-                "room that is used to track progress.\n" +
-                "– It could also be in electronic form by using one of a number of different agile\n" +
-                "project management tools so that a much broader audience can view the\n" +
-                "information online";
-        CloudTranslation cloudTranslation = new CloudTranslation();
+    private String test(@RequestParam("text")String text) {
+        System.out.println(text);
         try {
-            return cloudTranslation.translation(s);
+            return new Gson().toJson(new Response(true,"译文"+text));
         }catch (Exception e)
         {
-            return e.getMessage();
+            return new Gson().toJson(new Response(false,e.getMessage()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/translation")
+    private String translation(@RequestParam("text")String text) {
+        CloudTranslation cloudTranslation = new CloudTranslation();
+        try {
+            return new Gson().toJson(new Response(true,cloudTranslation.translation(text)));
+        }catch (Exception e)
+        {
+            return new Gson().toJson(new Response(false,e.getMessage()));
         }
     }
 

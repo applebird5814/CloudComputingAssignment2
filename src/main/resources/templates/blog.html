@@ -19,21 +19,37 @@
 <script>
     $("#navbar-common").load("/common/Navbar.html");
 </script>
+<input type="hidden" id="article" th:value="${Article}"/>
+<input type="hidden" id="comments" th:value="${Comments}"/>
 
 <div class="container">
     <div class="row">
-
-        <input type="hidden" id="article" th:value="${Article}"/>
-        <input type="hidden" id="comments" th:value="${Comments}"/>
-        <div class="col-md-8 article-main">
+        <div class="col-md-8 article-title" id="article-title">
             <label style="font-size: 32px" id="articleTitle">123</label>
             <br>
             <label style="font-size: 16px" id="articleAuthor">123</label>
-            <br><br>
-            <article id="articleContent">123</article>
             <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 article-main" id="article-main">
+            <article id="articleContent">123</article>
+        </div>
+        <div class="translation" id="translation"></div>
+        <aside class="col-md-4 blog-sidebar">
+            <div id="sidebar-common"></div>
+        </aside>
+        <script>
+            $("#sidebar-common").load("/common/Sidebar.html");
+        </script>
+    </div>
+    <div class="=row">
+        <div class="col-md-8 comment-main">
             <div class="row" id="mp3test">
                 <button class="btn btn-lg btn-primary btn-block" type="button" onclick="toMp3()">Compile MP3</button>
+            </div>
+            <div class="row" id="translationTest">
+                <button class="btn btn-lg btn-primary btn-block" type="button" onclick="translation()">Translation</button>
             </div>
             <div class="comment-main">
                 <br><br>
@@ -41,64 +57,53 @@
                 <article id="viewComments"></article>
             </div>
             <div class="comment-add" id="commentAdd"></div>
-
         </div>
-
-        <script>
-            var article=$.parseJSON(document.getElementById("article").value);
-            document.getElementById("articleTitle").innerHTML=article.title;
-            //可能要做成点击Author跳转到UserDetail页面
-            document.getElementById("articleAuthor").innerHTML="Published by "+article.author;
-            document.getElementById("articleContent").innerHTML=article.content;
-            var comments=$.parseJSON(document.getElementById("comments").value);
-            if(comments.length==0)
-            {
-                document.getElementById("viewComments").innerHTML=("<p>It's a pity that this article hasn't commented yet.<\p>");
-            }
-            else
-            {
-                var sum = "";
-                for(var i=0;i<comments.length;i++)
-                {
-                    var single= "<div class='row justify-content-between'>" +
-                        "<div>Author: "+comments[i].author+"<br>"+
-                        "Post at: "+comments[i].createDate+"<br>"+
-                        comments[i].content+"</div>" +
-                        "</div><br>";
-                    var sum = sum + single;
-                    console.log(single);
-                }
-                document.getElementById("viewComments").innerHTML=sum;
-            }
-            if(document.getElementById("screenName").value=="")
-            {
-                document.getElementById("commentAdd").innerHTML=("<div>Please<a href=\"/signIn\"> sign in</a> " +
-                    "to post your comments</div>")
-            }
-            else
-            {
-                document.getElementById("commentAdd").innerHTML=("<textarea id=\"comment\">Add your comment</textarea>\n" +
-                    "<button class=\"btn btn-lg btn-primary btn-block\" type=\"button\" onclick=\"submitComment()\">Submit Comment</button>");
-            }
-            var screenName=$.parseJSON(document.getElementById("screenName") .value);
-            console.log(screenName);
-
-            tinymce.init({
-                selector: '#comment',
-                height:300,
-                branding: false,
-            });
-        </script>
-
-        <aside class="col-md-4 blog-sidebar">
-            <div id="sidebar-common"></div>
-        </aside>
-        <script>
-            $("#sidebar-common").load("/common/Sidebar.html");
-        </script>
-
     </div>
 </div>
+
+<script>
+    var article=$.parseJSON(document.getElementById("article").value);
+    document.getElementById("articleTitle").innerHTML=article.title;
+    //可能要做成点击Author跳转到UserDetail页面
+    document.getElementById("articleAuthor").innerHTML="Published by "+article.author;
+    document.getElementById("articleContent").innerHTML=article.content;
+    var comments=$.parseJSON(document.getElementById("comments").value);
+    if(comments.length==0)
+    {
+        document.getElementById("viewComments").innerHTML=("<p>It's a pity that this article hasn't commented yet.<\p>");
+    }
+    else
+    {
+        var sum = "";
+        for(var i=0;i<comments.length;i++)
+        {
+            var single= "<div class='row justify-content-between'>" +
+                "<div>Author: "+comments[i].author+"<br>"+
+                "Post at: "+comments[i].createDate+"<br>"+
+                comments[i].content+"</div>" +
+                "</div><br>";
+            var sum = sum + single;
+            console.log(single);
+        }
+        document.getElementById("viewComments").innerHTML=sum;
+    }
+    if(document.getElementById("screenName").value=="")
+    {
+        document.getElementById("commentAdd").innerHTML=("<div>Please<a href=\"/signIn\"> sign in</a> " +
+            "to post your comments</div>")
+    }
+    else
+    {
+        document.getElementById("commentAdd").innerHTML=("<textarea id=\"comment\">Add your comment</textarea>\n" +
+            "<button class=\"btn btn-lg btn-primary btn-block\" type=\"button\" onclick=\"submitComment()\">Submit Comment</button>");
+    }
+
+    tinymce.init({
+        selector: '#comment',
+        height:300,
+        branding: false,
+    });
+</script>
 
 <script>
     function submitComment() {
@@ -130,7 +135,6 @@
         });
     }
 
-
     var mp3Url;
     function toMp3() {
         var text = document.getElementById("articleContent").innerText;
@@ -160,6 +164,31 @@
         console.log(mp3Url);
         var audio= new Audio(mp3Url);
         audio.play();
+    }
+
+    function translation() {
+        document.getElementById("article-main").className="col-md-4 article-main";
+        document.getElementById("translation").className="col-md-4 translation";
+        var text = document.getElementById("articleContent").innerText;
+        var url = '/ai/translation?text='+text;
+        var json="";
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            contentType: "application/json",
+            data: json,
+            success:function (data) {
+                if(data.success)
+                {
+                    document.getElementById("translation").innerText=data.message;
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            }
+        });
     }
 </script>
 
