@@ -26,14 +26,14 @@
     <div class="row">
         <div class="col-md-8">
             <div class="row">
-                <div class="col-md-9 article-title" id="article-title">
+                <div class="col-md-10 article-title" id="article-title">
                     <label style="font-size: 32px" id="articleTitle">123</label>
                     <br>
                     <label style="font-size: 16px" id="articleAuthor">123</label>
                     <br>
                 </div>
-                <div class="col-md-3">
-                    <button class="btn btn-lg btn-primary btn-block" type="button" onclick=editBlog()>Edit</button>
+                <div class="col-md-2">
+                    <button class="btn btn-lg btn-outline-dark" type="button" onclick=editBlog()>Edit</button>
                 </div>
             </div>
             <div class="row">
@@ -47,6 +47,8 @@
                     <div class="row" id="mp3test">
                         <button class="btn btn-lg btn-primary btn-block" type="button" onclick="toMp3()">Compile MP3</button>
                     </div>
+                    <br>
+                    <br>
                     <div class="row" id="translationTest">
                         <div class="col-md-8">
                             <select class="custom-select" id="language-type">
@@ -59,12 +61,12 @@
                         </div>
                         <br>
                         <div class="col-md-4">
-                            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="translation()">Translation</button>
+                            <button class="btn btn-lg btn-outline-primary" type="button" onclick="translation()">Translation</button>
                         </div>
                     </div>
                     <div class="comment-main">
                         <br><br>
-                        <label>Comment Area</label><br>
+                        <h3>Comment Area</h3><br>
                         <article id="viewComments"></article>
                     </div>
                     <div class="comment-add" id="commentAdd"></div>
@@ -174,7 +176,7 @@
                 if(data.success)
                 {
                     mp3Url=data.message;
-                    document.getElementById("mp3test").innerHTML="<button class=\"btn btn-lg btn-primary btn-block\" type=\"button\" onclick=\"play()\">Play MP3</button>";
+                    document.getElementById("mp3test").innerHTML="<button class=\"btn btn-lg btn-success btn-block\" type=\"button\" onclick=\"play()\">Play MP3</button>";
                 }
                 else
                 {

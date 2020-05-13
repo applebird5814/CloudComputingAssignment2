@@ -49,7 +49,7 @@ public class UserController {
 
     @ResponseBody
     @PostMapping(value="/signIn")
-    public String userSignIn(@RequestBody User user, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public String userSignIn(@RequestBody User user, HttpServletRequest httpServletRequest){
 
         Optional<User> optionalUser = userService.login(user.getUsername(), user.getPassword());
         if (optionalUser.isPresent()) {
@@ -65,6 +65,14 @@ public class UserController {
             String error = "Your username or password is incorrect!";
             return new Gson().toJson(new Response(true,error));
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/signOut")
+    public String signOut(HttpServletRequest httpServletRequest){
+        HttpSession httpSession =httpServletRequest.getSession();
+        httpSession.removeAttribute("user");
+        return new Gson().toJson(new Response(true,"Sign Out Success!"));
     }
 
 

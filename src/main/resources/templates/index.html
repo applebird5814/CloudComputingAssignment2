@@ -71,7 +71,7 @@
         else {
             var screenName=$.parseJSON(document.getElementById("screenName") .value);
             console.log(screenName);
-            var ele = "Hello, " + screenName +" your current login address is "+address;
+            var ele = "Hello, " + screenName +" your current login address is "+address +"<a onclick=\"signOut()\">( Sign Out )</a>";
             document.getElementById("userInfo").innerHTML=ele;
         }
 
@@ -167,8 +167,27 @@
     </script>
 
     <script>
-        /*
-        */
+        function signOut() {
+            var json = "";
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '/user/signOut',
+                contentType: "application/json",
+                data: json,
+                success:function (data) {
+                    if(data.success)
+                    {
+                        alert(data.message);
+                        window.location.href='/index';
+                    }
+                    else
+                    {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
         /*
         Object
         plus_code: {compound_code: "5WMR+5Q 澳大利亚維多利亞省墨尔本滨海港区", global_code: "4RJ65WMR+5Q"}

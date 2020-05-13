@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.util.Optional;
+
 
 @Controller
 public class MainController {
@@ -27,34 +25,6 @@ public class MainController {
     @Autowired
     @Qualifier("articleServiceImpl")
     ArticleService articleService;
-
-    @RequestMapping("/test")
-    public String test(){
-        return "test";
-    }
-
-    @ResponseBody
-    @RequestMapping("/addImage")
-    private String addImage(@RequestParam("file")MultipartFile file){
-        if(!file.isEmpty())
-        {
-            String fileName = file.getOriginalFilename();
-            System.out.println(fileName);
-            String suffixName = fileName.substring(fileName.lastIndexOf("."));
-            //后缀名可用于判断是否是图片
-            String filePath = "src/main/resource/static/images";
-            File dest = new File(filePath + fileName);
-            try {
-                file.transferTo(dest);
-
-                return "上传成功";
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return "error";
-    }
-
 
     @RequestMapping("/*")
     public String index(Model model, HttpServletRequest httpServletRequest){
@@ -97,7 +67,6 @@ public class MainController {
         httpSession.setMaxInactiveInterval(30*60);
         return "success";
     }
-
 
     @RequestMapping("/signIn")
     public String signIn(){
