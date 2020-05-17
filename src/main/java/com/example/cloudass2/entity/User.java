@@ -1,10 +1,9 @@
-package com.example.cloudass2.Entity;
+package com.example.cloudass2.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Entity
 @Table(name = "user")

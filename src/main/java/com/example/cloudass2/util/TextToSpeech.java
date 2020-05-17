@@ -1,4 +1,4 @@
-package com.example.cloudass2.Util;
+package com.example.cloudass2.util;
 import com.google.cloud.texttospeech.v1.AudioConfig;
 import com.google.cloud.texttospeech.v1.AudioEncoding;
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
@@ -9,6 +9,9 @@ import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.protobuf.ByteString;
 
 import java.io.IOException;
+/**
+ * @author miaos
+ */
 public class TextToSpeech {
 
     public byte[] transferTextIntoMp3Steam(String s) throws IOException {

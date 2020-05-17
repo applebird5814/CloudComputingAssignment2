@@ -1,7 +1,7 @@
-package com.example.cloudass2.Controller;
+package com.example.cloudass2.controller;
 
-import com.example.cloudass2.Entity.Response;
-import com.example.cloudass2.Entity.Type;
+import com.example.cloudass2.entity.Response;
+import com.example.cloudass2.entity.Type;
 import com.example.cloudass2.service.TypeService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author miaos
+ */
 @Controller
 @RequestMapping("/type")
 public class TypeController {

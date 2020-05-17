@@ -1,8 +1,8 @@
 package com.example.cloudass2.service.impl;
 
 
-import com.example.cloudass2.Dao.TypeDao;
-import com.example.cloudass2.Entity.Type;
+import com.example.cloudass2.dao.TypeDao;
+import com.example.cloudass2.entity.Type;
 
 import com.example.cloudass2.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;

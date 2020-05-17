@@ -1,7 +1,7 @@
-package com.example.cloudass2.Controller;
+package com.example.cloudass2.controller;
 
 
-import com.example.cloudass2.Entity.User;
+import com.example.cloudass2.entity.User;
 import com.example.cloudass2.service.ArticleService;
 import com.example.cloudass2.service.TypeService;
 import com.google.gson.Gson;
@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
+/**
+ * @author miaos
+ */
 @Controller
 public class MainController {
 

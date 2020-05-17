@@ -1,9 +1,12 @@
 package com.example.cloudass2.service;
 
-import com.example.cloudass2.Entity.Type;
+import com.example.cloudass2.entity.Type;
 
 import java.util.List;
 
+/**
+ * @author miaos
+ */
 public interface TypeService {
     void addType(Type type);
 

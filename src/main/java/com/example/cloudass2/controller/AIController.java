@@ -1,9 +1,10 @@
-package com.example.cloudass2.Controller;
+package com.example.cloudass2.controller;
 
 
-import com.example.cloudass2.Entity.Response;
-import com.example.cloudass2.Util.CloudTranslation;
-import com.example.cloudass2.Util.TextToSpeech;
+import com.example.cloudass2.entity.Response;
+import com.example.cloudass2.util.BigQueryUtil;
+import com.example.cloudass2.util.CloudTranslation;
+import com.example.cloudass2.util.TextToSpeech;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.Feature;
@@ -23,9 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author miaos
+ */
 @RequestMapping("/ai")
 @Controller
 public class AIController {
@@ -35,8 +40,8 @@ public class AIController {
     @Autowired
     private Storage storage;
 
-    private String imageFileExtension[] = new String[]{".jpg", ".jpeg", ".gif", ".png", ".ico"};
-    private String resultSet[] = new String[]{"VERY_LIKELY","LIKELY", "POSSIBLE","UNLIKELY" , "VERY_UNLIKELY", "UNKNOWN"};
+    private final String imageFileExtension[] = new String[]{".jpg", ".jpeg", ".gif", ".png", ".ico"};
+    private final String resultSet[] = new String[]{"VERY_LIKELY","LIKELY", "POSSIBLE","UNLIKELY" , "VERY_UNLIKELY", "UNKNOWN"};
 
     @Value("${gcs-resource-test-bucket}")
     private String bucketName;
@@ -44,6 +49,42 @@ public class AIController {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @ResponseBody
+    @RequestMapping("/test")
+    private String test(){
+        BigQueryUtil bigQueryUtil = new BigQueryUtil();
+        List<String> s;
+        try {
+            s=bigQueryUtil.getCOD19("Australia");
+        }catch (Exception e)
+        {
+            return e.getMessage();
+        }
+        return s.toString();
+    }
+
+
+    /*
+    @ResponseBody
+    @RequestMapping("/speechToText")
+    public String speechToText(@RequestParam("file") MultipartFile file) throws IOException {
+        byte[] stream = file.getBytes();
+        SpeechToText speechToText = new SpeechToText();
+        String s = speechToText.transferBytesIntoTextString(stream);
+        System.out.println(s);
+
+        String uuid = "test";
+        String fileName = uuid+".mp3";
+        String uploadUrl = "gs://"+bucketName+"/"+fileName;
+        Resource resource = new GoogleStorageResource(storage,uploadUrl);
+        try (OutputStream os = ((WritableResource) resource).getOutputStream()) {
+            os.write(stream);
+        }catch (Exception e)
+        {
+
+        }
+        return new Gson().toJson(new Response(true,s));
+    }*/
 
     @ResponseBody
     @RequestMapping("/translation")
@@ -60,7 +101,7 @@ public class AIController {
 
     @ResponseBody
     @RequestMapping("/textToSpeech")
-    public String voiceTest(@RequestParam("text") String text) throws IOException {
+    public String textToSpeech(@RequestParam("text") String text) throws IOException {
         TextToSpeech textToSpeech = new TextToSpeech();
         byte[] steam = textToSpeech.transferTextIntoMp3Steam(text);
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");

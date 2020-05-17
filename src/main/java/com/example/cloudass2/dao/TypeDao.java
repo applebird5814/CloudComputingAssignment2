@@ -1,6 +1,6 @@
-package com.example.cloudass2.Dao;
+package com.example.cloudass2.dao;
 
-import com.example.cloudass2.Entity.Type;
+import com.example.cloudass2.entity.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

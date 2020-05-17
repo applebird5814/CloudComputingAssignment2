@@ -22,10 +22,8 @@
     <div class="row">
 
         <input type="hidden" id="articles" th:value="${Articles}"/>
-
         <br><br>
         <div class="col-md-8 article-main" id="listMain"><br><br></div>
-
         <script>
             var articles=$.parseJSON(document.getElementById("articles").value);
             console.log(articles);

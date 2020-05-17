@@ -1,4 +1,4 @@
-package com.example.cloudass2.Entity;
+package com.example.cloudass2.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

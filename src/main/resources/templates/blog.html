@@ -7,14 +7,14 @@
     <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.4.1/js/bootstrap.js"></script>
     <script src="/webjars/tinymce/5.1.6/tinymce.js"></script>
+    <script th:src="@{/js/audio.min.js}"></script>
     <title>Blog</title>
 </head>
-
 <body>
 <input type="hidden" id="screenName" th:value="${ScreenName}"/>
 
 <div class="container">
-    <div id="navbar-common"></div>
+        <div id="navbar-common"></div>
 </div>
 <script>
     $("#navbar-common").load("/common/Navbar.html");
@@ -164,6 +164,7 @@
     var mp3Url;
     function toMp3() {
         var text = document.getElementById("articleContent").innerText;
+        document.getElementById("mp3test").innerHTML="";
         var json = "";
         var url = '/ai/textToSpeech?text='+text;
         $.ajax({
@@ -176,7 +177,11 @@
                 if(data.success)
                 {
                     mp3Url=data.message;
-                    document.getElementById("mp3test").innerHTML="<button class=\"btn btn-lg btn-success btn-block\" type=\"button\" onclick=\"play()\">Play MP3</button>";
+                    document.getElementById("mp3test").innerHTML="<audio src=\""+mp3Url+"\" autoplay />";
+                    //document.getElementById("mp3test").innerHTML="<button class=\"btn btn-lg btn-success btn-block\" type=\"button\" onclick=\"play()\">Play MP3</button>";
+                    audiojs.events.ready(function() {
+                        var as = audiojs.createAll();
+                    });
                 }
                 else
                 {
@@ -186,11 +191,12 @@
         });
     }
 
+    /*
     function play() {
         console.log(mp3Url);
         var audio= new Audio(mp3Url);
         audio.play();
-    }
+    }*/
 
     function translation() {
         document.getElementById("article-main").className="col-md-6 article-main";

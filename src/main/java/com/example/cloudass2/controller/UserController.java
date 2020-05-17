@@ -1,7 +1,7 @@
-package com.example.cloudass2.Controller;
+package com.example.cloudass2.controller;
 
-import com.example.cloudass2.Entity.Response;
-import com.example.cloudass2.Entity.User;
+import com.example.cloudass2.entity.Response;
+import com.example.cloudass2.entity.User;
 
 import com.example.cloudass2.service.UserService;
 import com.google.gson.Gson;
@@ -12,14 +12,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.*;
 import java.util.Optional;
 
 
+/**
+ * @author miaos
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController {

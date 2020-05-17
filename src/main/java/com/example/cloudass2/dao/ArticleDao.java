@@ -1,6 +1,6 @@
-package com.example.cloudass2.Dao;
+package com.example.cloudass2.dao;
 
-import com.example.cloudass2.Entity.Article;
+import com.example.cloudass2.entity.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,10 +1,13 @@
 package com.example.cloudass2.service;
 
-import com.example.cloudass2.Entity.Article;
+import com.example.cloudass2.entity.Article;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
+/**
+ * @author miaos
+ */
 public interface ArticleService {
     void addArticle(Article article);
 

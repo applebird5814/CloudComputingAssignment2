@@ -1,5 +1,4 @@
-package com.example.cloudass2.Util;
-import com.google.cloud.translate.Translate;
+package com.example.cloudass2.util;
 import com.google.cloud.translate.v3.LocationName;
 import com.google.cloud.translate.v3.TranslateTextRequest;
 import com.google.cloud.translate.v3.TranslateTextResponse;
@@ -7,6 +6,9 @@ import com.google.cloud.translate.v3.Translation;
 import com.google.cloud.translate.v3.TranslationServiceClient;
 
 import java.io.IOException;
+/**
+ * @author miaos
+ */
 public class CloudTranslation {
 
     private String projectId;
@@ -35,7 +37,6 @@ public class CloudTranslation {
         translateText(projectId, targetLanguage, text);
     }*/
 
-    // Translating Text
     public String translateText(String projectId, String targetLanguage, String text)
             throws IOException {
 

@@ -1,9 +1,9 @@
-package com.example.cloudass2.Controller;
+package com.example.cloudass2.controller;
 
-import com.example.cloudass2.Entity.Comment;
+import com.example.cloudass2.entity.Comment;
 
-import com.example.cloudass2.Entity.Response;
-import com.example.cloudass2.Entity.User;
+import com.example.cloudass2.entity.Response;
+import com.example.cloudass2.entity.User;
 import com.example.cloudass2.service.CommentService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;

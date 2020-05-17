@@ -1,15 +1,14 @@
-package com.example.cloudass2.Controller;
+package com.example.cloudass2.controller;
 
-import com.example.cloudass2.Entity.Article;
-import com.example.cloudass2.Entity.Response;
-import com.example.cloudass2.Entity.User;
+import com.example.cloudass2.entity.Article;
+import com.example.cloudass2.entity.Response;
+import com.example.cloudass2.entity.User;
 import com.example.cloudass2.service.ArticleService;
 import com.example.cloudass2.service.CommentService;
 import com.example.cloudass2.service.TypeService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Collection;
 
+/**
+ * @author miaos
+ */
 @Controller
 @RequestMapping("/article")
 public class ArticleController {
