@@ -6,7 +6,6 @@ import com.example.cloudass2.util.BigQueryUtil;
 import com.example.cloudass2.util.COVIDnode;
 import com.example.cloudass2.util.CloudTranslation;
 import com.example.cloudass2.util.TextToSpeech;
-import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.Feature;
@@ -26,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
