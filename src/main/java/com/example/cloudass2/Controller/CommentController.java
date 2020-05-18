@@ -1,10 +1,10 @@
-package com.example.cloudass2.controller;
+package com.example.cloudass2.Controller;
 
-import com.example.cloudass2.entity.Comment;
+import com.example.cloudass2.Entity.Comment;
 
-import com.example.cloudass2.entity.Response;
-import com.example.cloudass2.entity.User;
-import com.example.cloudass2.service.CommentService;
+import com.example.cloudass2.Entity.Response;
+import com.example.cloudass2.Entity.User;
+import com.example.cloudass2.Service.CommentsService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,8 +23,8 @@ import javax.validation.Valid;
 public class CommentController {
 
     @Autowired
-    @Qualifier("commentServiceImpl")
-    CommentService commentService;
+    @Qualifier("commentsServiceImpl")
+    CommentsService commentsService;
 
     @ResponseBody
     @RequestMapping("addComment")
@@ -41,7 +41,7 @@ public class CommentController {
             }
         }
         System.out.println(comment);
-        commentService.addComment(comment);
+        commentsService.addComment(comment);
         return new Gson().toJson(new Response(true,"Comment add success!"));
     }
 

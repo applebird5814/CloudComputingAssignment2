@@ -1,17 +1,20 @@
-package com.example.cloudass2.service.impl;
+package com.example.cloudass2.Service.impl;
 
 
-import com.example.cloudass2.dao.TypeDao;
-import com.example.cloudass2.entity.Type;
+import com.example.cloudass2.Dao.TypeDao;
+import com.example.cloudass2.Entity.Type;
 
-import com.example.cloudass2.service.TypeService;
+import com.example.cloudass2.Service.TypesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("typeServiceImpl")
-public class TypeServiceImpl implements TypeService {
+/**
+ * @author miaos
+ */
+@Service("typesServiceImpl")
+public class TypesServiceImpl implements TypesService {
     @Autowired
     TypeDao typeDao;
 

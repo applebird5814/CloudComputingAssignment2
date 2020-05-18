@@ -1,10 +1,10 @@
-package com.example.cloudass2.service.impl;
+package com.example.cloudass2.Service.impl;
 
 
-import com.example.cloudass2.dao.ArticleDao;
-import com.example.cloudass2.entity.Article;
+import com.example.cloudass2.Dao.ArticleDao;
+import com.example.cloudass2.Entity.Article;
 
-import com.example.cloudass2.service.ArticleService;
+import com.example.cloudass2.Service.ArticlesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,8 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service("articleServiceImpl")
-public class ArticleServiceImpl implements ArticleService {
+/**
+ * @author miaos
+ */
+@Service("articlesServiceImpl")
+public class ArticlesServiceImpl implements ArticlesService {
     @Autowired
     ArticleDao articleDao;
 

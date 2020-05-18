@@ -1,11 +1,11 @@
-package com.example.cloudass2.controller;
+package com.example.cloudass2.Controller;
 
-import com.example.cloudass2.entity.Article;
-import com.example.cloudass2.entity.Response;
-import com.example.cloudass2.entity.User;
-import com.example.cloudass2.service.ArticleService;
-import com.example.cloudass2.service.CommentService;
-import com.example.cloudass2.service.TypeService;
+import com.example.cloudass2.Entity.Article;
+import com.example.cloudass2.Entity.Response;
+import com.example.cloudass2.Entity.User;
+import com.example.cloudass2.Service.ArticlesService;
+import com.example.cloudass2.Service.CommentsService;
+import com.example.cloudass2.Service.TypesService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,16 +27,16 @@ import javax.validation.Valid;
 public class ArticleController {
 
     @Autowired
-    @Qualifier("articleServiceImpl")
-    ArticleService articleService;
+    @Qualifier("articlesServiceImpl")
+    ArticlesService articlesService;
 
     @Autowired
-    @Qualifier("typeServiceImpl")
-    TypeService typeService;
+    @Qualifier("typesServiceImpl")
+    TypesService typesService;
 
     @Autowired
-    @Qualifier("commentServiceImpl")
-    CommentService commentService;
+    @Qualifier("commentsServiceImpl")
+    CommentsService commentsService;
 
     @RequestMapping("/blog")
     public String noBlogId(){
@@ -45,7 +45,7 @@ public class ArticleController {
 
     @RequestMapping("/blog/{id}")
     public String blog(@PathVariable(value = "id") String id,Model model,HttpServletRequest httpServletRequest){
-        Article article = articleService.findArticleById(id);
+        Article article = articlesService.findArticleById(id);
         if(article==null)
         {
             return "error/ArticleNotFound";
@@ -61,25 +61,25 @@ public class ArticleController {
             }
         }
         model.addAttribute("Article",new Gson().toJson(article));
-        model.addAttribute("Comments",new Gson().toJson(commentService.findCommentsByArticleId(id)));
+        model.addAttribute("Comments",new Gson().toJson(commentsService.findCommentsByArticleId(id)));
         return "blog";
     }
 
     @RequestMapping("/blogList")
     public String blogList(Model model){
-        model.addAttribute("Articles",new Gson().toJson(articleService.findAll()));
+        model.addAttribute("Articles",new Gson().toJson(articlesService.findAll()));
         return "blogList";
     }
 
     @RequestMapping("/blogList/{id}")
     public String blogList(Model model, @PathVariable String id){
-        model.addAttribute("Articles",new Gson().toJson(articleService.findByType(id)));
+        model.addAttribute("Articles",new Gson().toJson(articlesService.findByType(id)));
         return "blogList";
     }
 
     @RequestMapping("/editBlog/{id}")
     public String editBlog(@PathVariable(value = "id") String id,Model model,HttpServletRequest httpServletRequest){
-        if(articleService.findArticleById(id)==null)
+        if(articlesService.findArticleById(id)==null)
         {
             return "error/ArticleNotFound";
         }
@@ -88,12 +88,12 @@ public class ArticleController {
         {
             try {
                 User user = (User) httpSession.getAttribute("user");
-                Article article = articleService.findArticleById(id);
+                Article article = articlesService.findArticleById(id);
                 if(user.getId().equals(article.getAuthorId()))
                 {
                     model.addAttribute("AuthorValidation",new Gson().toJson(user.getScreenName()));
                 }
-                model.addAttribute("Type",new Gson().toJson(typeService.getById(article.getTypeId())));
+                model.addAttribute("Type",new Gson().toJson(typesService.getById(article.getTypeId())));
                 model.addAttribute("Article",new Gson().toJson(article));
             }catch (Exception e)
             {
@@ -119,7 +119,7 @@ public class ArticleController {
                 System.out.println(user);
                 article.setAuthor(user.getScreenName());
                 article.setAuthorId(user.getId());
-                articleService.addArticle(article);
+                articlesService.addArticle(article);
                 return new Gson().toJson(new Response(true,"Submit success"));
             } catch (Exception e) {
                 return new Gson().toJson(new Response(false,e.getMessage()));
@@ -131,7 +131,7 @@ public class ArticleController {
     @PostMapping(value="/update")
     public String updateArticle(@RequestBody Article article) {
         try {
-            articleService.updateArticle(article);
+            articlesService.updateArticle(article);
             return new Gson().toJson(new Response(true,"提交成功"));
         } catch (Exception e) {
             return new Gson().toJson(new Response(false,e.getMessage()));
@@ -140,7 +140,7 @@ public class ArticleController {
 
     @RequestMapping("/post")
     public String postNewBlog(Model model,HttpServletRequest httpServletRequest){
-        model.addAttribute("Types",new Gson().toJson(typeService.getAllTypes()));
+        model.addAttribute("Types",new Gson().toJson(typesService.getAllTypes()));
         HttpSession httpSession = httpServletRequest.getSession(false);
         if(httpSession!=null)
         {

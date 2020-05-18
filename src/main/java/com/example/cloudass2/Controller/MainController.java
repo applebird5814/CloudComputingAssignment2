@@ -1,9 +1,9 @@
-package com.example.cloudass2.controller;
+package com.example.cloudass2.Controller;
 
 
-import com.example.cloudass2.entity.User;
-import com.example.cloudass2.service.ArticleService;
-import com.example.cloudass2.service.TypeService;
+import com.example.cloudass2.Entity.User;
+import com.example.cloudass2.Service.ArticlesService;
+import com.example.cloudass2.Service.TypesService;
 import com.example.cloudass2.util.BigQueryUtil;
 import com.example.cloudass2.util.COVIDnode;
 import com.google.gson.Gson;
@@ -27,17 +27,17 @@ import java.util.List;
 public class MainController {
 
     @Autowired
-    @Qualifier("typeServiceImpl")
-    TypeService typeService;
+    @Qualifier("typesServiceImpl")
+    TypesService typesService;
 
     @Autowired
-    @Qualifier("articleServiceImpl")
-    ArticleService articleService;
+    @Qualifier("articlesServiceImpl")
+    ArticlesService articlesService;
 
     @RequestMapping("/*")
     public String index(Model model, HttpServletRequest httpServletRequest) {
-        model.addAttribute("Types",new Gson().toJson(typeService.getAllTypes()));
-        model.addAttribute("LatestArticle",new Gson().toJson(articleService.findAll().get(0)));
+        model.addAttribute("Types",new Gson().toJson(typesService.getAllTypes()));
+        model.addAttribute("LatestArticle",new Gson().toJson(articlesService.findAll().get(0)));
         HttpSession httpSession = httpServletRequest.getSession();
         try {
             User user = (User) httpSession.getAttribute("user");
@@ -81,7 +81,7 @@ public class MainController {
     @ResponseBody
     @RequestMapping("/addAddress")
     public String address(@RequestParam("address") String address,HttpServletRequest httpServletRequest){
-        String a[]=address.split(" ");
+        String[] a =address.split(" ");
         HttpSession httpSession =httpServletRequest.getSession();
         StringBuilder stringBuilder = new StringBuilder();
         for(int i=2;i<a.length;i++)

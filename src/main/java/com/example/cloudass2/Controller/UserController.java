@@ -1,9 +1,9 @@
-package com.example.cloudass2.controller;
+package com.example.cloudass2.Controller;
 
-import com.example.cloudass2.entity.Response;
-import com.example.cloudass2.entity.User;
+import com.example.cloudass2.Entity.Response;
+import com.example.cloudass2.Entity.User;
 
-import com.example.cloudass2.service.UserService;
+import com.example.cloudass2.Service.UsersService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,8 +27,8 @@ public class UserController {
 
 
     @Autowired
-    @Qualifier("userServiceImpl")
-    UserService userService;
+    @Qualifier("usersServiceImpl")
+    UsersService usersService;
 
     @ResponseBody
     @PostMapping(value="/signUp")
@@ -40,7 +40,7 @@ public class UserController {
             }
             return new Gson().toJson(new Response(false,"Invalid input!"));
         }
-        boolean b = userService.createUser(user);
+        boolean b = usersService.createUser(user);
         if(b)
         {
             return new Gson().toJson(new Response(true,"Register success! Please login!"));
@@ -52,7 +52,7 @@ public class UserController {
     @PostMapping(value="/signIn")
     public String userSignIn(@RequestBody User user, HttpServletRequest httpServletRequest){
 
-        Optional<User> optionalUser = userService.login(user.getUsername(), user.getPassword());
+        Optional<User> optionalUser = usersService.login(user.getUsername(), user.getPassword());
         if (optionalUser.isPresent()) {
             HttpSession httpSession =httpServletRequest.getSession();
             httpSession.setAttribute("user",optionalUser.get());

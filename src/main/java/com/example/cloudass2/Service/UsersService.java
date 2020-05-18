@@ -1,13 +1,13 @@
-package com.example.cloudass2.service;
+package com.example.cloudass2.Service;
 
-import com.example.cloudass2.entity.User;
+import com.example.cloudass2.Entity.User;
 
 import java.util.Optional;
 
 /**
  * @author miaos
  */
-public interface UserService {
+public interface UsersService {
 
     User getUser(String id);
 

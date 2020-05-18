@@ -1,8 +1,8 @@
-package com.example.cloudass2.controller;
+package com.example.cloudass2.Controller;
 
-import com.example.cloudass2.entity.Response;
-import com.example.cloudass2.entity.Type;
-import com.example.cloudass2.service.TypeService;
+import com.example.cloudass2.Entity.Response;
+import com.example.cloudass2.Entity.Type;
+import com.example.cloudass2.Service.TypesService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 public class TypeController {
 
     @Autowired
-    @Qualifier("typeServiceImpl")
-    TypeService typeService;
+    @Qualifier("typesServiceImpl")
+    TypesService typesService;
 
     @ResponseBody
     @PostMapping("/addType")
@@ -34,7 +34,7 @@ public class TypeController {
         }
         else {
             try {
-                typeService.addType(type);
+                typesService.addType(type);
                 return new Gson().toJson(new Response(true,"提交成功"));
             } catch (Exception e) {
                 return new Gson().toJson(new Response(false,"该类型已经存在！"));
@@ -44,13 +44,13 @@ public class TypeController {
 
     @RequestMapping("/editType")
     public String typeEdit(Model model){
-        model.addAttribute("Types",new Gson().toJson(typeService.getAllTypes()));
+        model.addAttribute("Types",new Gson().toJson(typesService.getAllTypes()));
         return "editType";
     }
 
     @RequestMapping("/view")
     public String typeView(Model model){
-        model.addAttribute("Types",new Gson().toJson(typeService.getAllTypes()));
+        model.addAttribute("Types",new Gson().toJson(typesService.getAllTypes()));
         return "type";
     }
 

@@ -1,4 +1,4 @@
-package com.example.cloudass2.entity;
+package com.example.cloudass2.Entity;
 
 public class Response {
 

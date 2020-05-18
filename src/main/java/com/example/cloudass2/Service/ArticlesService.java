@@ -1,6 +1,6 @@
-package com.example.cloudass2.service;
+package com.example.cloudass2.Service;
 
-import com.example.cloudass2.entity.Article;
+import com.example.cloudass2.Entity.Article;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author miaos
  */
-public interface ArticleService {
+public interface ArticlesService {
     void addArticle(Article article);
 
     void updateArticle(Article article);

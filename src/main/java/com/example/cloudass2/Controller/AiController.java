@@ -1,9 +1,7 @@
-package com.example.cloudass2.controller;
+package com.example.cloudass2.Controller;
 
 
-import com.example.cloudass2.entity.Response;
-import com.example.cloudass2.util.BigQueryUtil;
-import com.example.cloudass2.util.COVIDnode;
+import com.example.cloudass2.Entity.Response;
 import com.example.cloudass2.util.CloudTranslation;
 import com.example.cloudass2.util.TextToSpeech;
 import com.google.cloud.storage.Storage;
@@ -33,7 +31,7 @@ import java.util.UUID;
  */
 @RequestMapping("/ai")
 @Controller
-public class AIController {
+public class AiController {
     @Autowired
     private CloudVisionTemplate cloudVisionTemplate;
 
@@ -48,21 +46,6 @@ public class AIController {
 
     @Autowired
     private ResourceLoader resourceLoader;
-
-    @ResponseBody
-    @RequestMapping("/test")
-    private String test() throws InterruptedException {
-        BigQueryUtil bigQueryUtil = new BigQueryUtil();
-        HashMap<String,COVIDnode> map;
-        try {
-            map=bigQueryUtil.getCOD19("Australia");
-        }catch (Exception e)
-        {
-            return e.getMessage();
-        }
-        return map.toString();
-    }
-
 
     /*
     @ResponseBody

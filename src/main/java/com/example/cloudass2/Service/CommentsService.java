@@ -1,13 +1,13 @@
-package com.example.cloudass2.service;
+package com.example.cloudass2.Service;
 
-import com.example.cloudass2.entity.Comment;
+import com.example.cloudass2.Entity.Comment;
 
 import java.util.List;
 
 /**
  * @author miaos
  */
-public interface CommentService {
+public interface CommentsService {
 
     void addComment(Comment comment);
 
