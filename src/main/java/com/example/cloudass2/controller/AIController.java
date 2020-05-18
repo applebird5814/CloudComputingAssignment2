@@ -3,8 +3,10 @@ package com.example.cloudass2.controller;
 
 import com.example.cloudass2.entity.Response;
 import com.example.cloudass2.util.BigQueryUtil;
+import com.example.cloudass2.util.COVIDnode;
 import com.example.cloudass2.util.CloudTranslation;
 import com.example.cloudass2.util.TextToSpeech;
+import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.Feature;
@@ -40,8 +42,8 @@ public class AIController {
     @Autowired
     private Storage storage;
 
-    private final String imageFileExtension[] = new String[]{".jpg", ".jpeg", ".gif", ".png", ".ico"};
-    private final String resultSet[] = new String[]{"VERY_LIKELY","LIKELY", "POSSIBLE","UNLIKELY" , "VERY_UNLIKELY", "UNKNOWN"};
+    private final String[] imageFileExtension = new String[]{".jpg", ".jpeg", ".gif", ".png", ".ico"};
+    private final String[] resultSet = new String[]{"VERY_LIKELY","LIKELY", "POSSIBLE","UNLIKELY" , "VERY_UNLIKELY", "UNKNOWN"};
 
     @Value("${gcs-resource-test-bucket}")
     private String bucketName;
@@ -51,16 +53,16 @@ public class AIController {
 
     @ResponseBody
     @RequestMapping("/test")
-    private String test(){
+    private String test() throws InterruptedException {
         BigQueryUtil bigQueryUtil = new BigQueryUtil();
-        List<String> s;
+        HashMap<String,COVIDnode> map;
         try {
-            s=bigQueryUtil.getCOD19("Australia");
+            map=bigQueryUtil.getCOD19("Australia");
         }catch (Exception e)
         {
             return e.getMessage();
         }
-        return s.toString();
+        return map.toString();
     }
 
 
