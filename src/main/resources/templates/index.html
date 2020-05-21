@@ -20,7 +20,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAITpqFq9cTFRE7ayYVNRWqs0CHCK1o5D8',
+                url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=APIKEY',
                 contentType: "application/json",
                 data: mywifi,
                 success:function (latlng) {
@@ -28,7 +28,7 @@
                     var location = data.location;
                     var lat =location.lat;
                     var lng = location.lng;
-                    var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lng+"&language=en-AU&key=AIzaSyAITpqFq9cTFRE7ayYVNRWqs0CHCK1o5D8";
+                    var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lng+"&language=en-AU&key=APIKEY";
                     $.ajax({
                         type: "POST",
                         dataType: "json",
